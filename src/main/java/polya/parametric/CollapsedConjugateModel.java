@@ -1,0 +1,55 @@
+package polya.parametric;
+
+
+
+/**
+ * A CollapsedConjugateModel is a model that admits tractable 
+ * collapsed inference. 
+ * 
+ * The model conceptually contains three variable:
+ * - Hyperparameter variable (deterministic)
+ * - Parameter (random; the part that is collapsed, i.e. marginalized)
+ * - Observation(s) (random and conditioned on; the dataset is 
+ * stored in SufficientStatistic objects)
+ * 
+ * The main use of this interface is that given an implementation of
+ * - logPriorDensityAtThetaStar
+ * - logLikelihoodGivenThetaStar
+ * - update
+ * it is then easy to compute the marginal probability of a dataset
+ * using Parametrics.logMarginal()
+ * 
+ * Throughout this class, ThetaStar is an arbitrary Parameter realization.
+ * (See Equation (12,13) in
+ * http://www.stat.ubc.ca/~bouchard/courses/stat547-sp2013-14/lecture/2014/01/12/notes-lecture3.html)
+ * 
+ * @author Alexandre Bouchard (alexandre.bouchard@gmail.com)
+ *
+ */
+public interface CollapsedConjugateModel
+{
+  /**
+   * See p\_hp(theta*) Equation (12,13) in
+   * http://www.stat.ubc.ca/~bouchard/courses/stat547-sp2013-14/lecture/2014/01/12/notes-lecture3.html
+   * @param hp
+   * @return
+   */
+  public double logPriorDensityAtThetaStar(HyperParameter hp);
+  
+  /**
+   * See l(x|z) Equation (12,13) in
+   * http://www.stat.ubc.ca/~bouchard/courses/stat547-sp2013-14/lecture/2014/01/12/notes-lecture3.html
+   * @param data
+   * @return
+   */
+  public double logLikelihoodGivenThetaStar(SufficientStatistic data);
+  
+  /**
+   * See u(data, before) in Equation (12,13) in
+   * http://www.stat.ubc.ca/~bouchard/courses/stat547-sp2013-14/lecture/2014/01/12/notes-lecture3.html
+   * @param before
+   * @param data
+   * @return
+   */
+  public HyperParameter update(HyperParameter before, SufficientStatistic data);
+}
