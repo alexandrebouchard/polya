@@ -9,33 +9,73 @@ import java.util.Random;
 
 import org.apache.commons.math3.analysis.MultivariateFunction;
 
-
-import com.google.common.collect.Maps;
-
 import polya.crp.utils.ClusterId;
 import polya.crp.utils.LogAverageFunction;
-import polya.mcmc.ExponentialPrior;
 import polya.mcmc.Factor;
-import polya.mcmc.MHMixture;
+import polya.mcmc.MHAlternation;
 import polya.mcmc.RealVariable;
-import polya.mcmc.UniformPrior;
 import polya.parametric.Parametrics;
 import polya.parametric.SufficientStatistic;
 import polya.parametric.normal.CollapsedNIWModel;
 import polya.parametric.normal.NIWHyperParameter;
 import polya.parametric.normal.NIWs;
 
+import com.google.common.collect.Maps;
 
 
+/**
+ * Contains the information needed for running an MCMC
+ * chain over a CRP.
+ * 
+ * TODO: Currently specialized to NIW observations, generalize this.
+ * 
+ * @author Alexandre Bouchard (alexandre.bouchard@gmail.com)
+ *
+ */
 public class CompleteState
 {
+  /**
+   * The seating arrangement.
+   */
   public final CRPState clustering;
+  
+  /**
+   * The alpha0 and discount parameters of a PY process
+   */
   public final PYPrior clusteringParams;
+  
+  /**
+   * The hyper parameters of the NIW
+   */
   public final NIWHyperParameter hp;
+  
+  /**
+   * 
+   */
   public final CollapsedNIWModel model;
-  public final MHMixture mhMoves;
+  
+  /**
+   * The MCMC kernels used to resample this state.
+   */
+  public final MHAlternation mhMoves;
+  
+  /**
+   * An ordering of the customer, reshuffled at
+   * each sampling round.
+   */
   public final List<Integer> allCustomers;
   
+  /**
+   * Initialize the arrangement by putting each customer alone at their table.
+   * 
+   * Initialize the likelihood using the provided csv,
+   * each line is a customer (no header), each column is a dimension.
+   * 
+   * TODO: currently assumes 2 dimensions
+   * 
+   * @param csvFile
+   * @return
+   */
   public static CompleteState standardInit(File csvFile)
   {
     CRPState state = CRPState.fullyDisconnectedClustering(NIWs.loadFromCSVFile(csvFile));
@@ -57,9 +97,14 @@ public class CompleteState
     this.model = model;
     allCustomers = new ArrayList<Integer>(clustering.getAllCustomers());
     Collections.sort(allCustomers);
-    this.mhMoves = initMHMoves();
+    this.mhMoves = new MHAlternation();
   }
   
+  /**
+   * Return the logpredictive distribution corresponding to the current configuration.
+   * 
+   * @return
+   */
   public MultivariateFunction logPredictive()
   {
     LogAverageFunction result = new LogAverageFunction();
@@ -83,33 +128,10 @@ public class CompleteState
     return result;
   }
   
-  private MHMixture initMHMoves()
-  {
-    MHMixture result = new MHMixture();
-    
-    // resample clustering parameters
-    result.addRealNodeToResampleWithPrior(
-        clusteringParams.alpha0VariableView(), 
-        ExponentialPrior.withRate(1e-100).truncateAt(-1), 
-        clusteringFactor);
-    result.addRealNodeToResampleWithPrior(
-        clusteringParams.discountVariableView(),
-        UniformPrior.onUnitInteval(),
-        clusteringFactor);
-    
-    // resample likelihood hyper-params
-    result.addRealNodeToResampleWithPrior(
-        hp.kappaVariableView(),
-        ExponentialPrior.withRate(1e-100),
-        collapsedLikelihoodFactor);
-    result.addRealNodeToResampleWithPrior(
-        hp.nuVariableView(),
-        ExponentialPrior.withRate(1e-100).truncateAt(hp.dim() - 1),
-        collapsedLikelihoodFactor);
-    
-    return result;
-  }
-
+  /**
+   * Sample the customer seatings and the parameters.
+   * @param rand
+   */
   public void doOneSamplingRound(Random rand)
   {
     Collections.shuffle(allCustomers, rand);
@@ -118,7 +140,13 @@ public class CompleteState
     mhMoves.sampleOneRound(rand);
   }
   
-  private final Factor collapsedLikelihoodFactor = new Factor() 
+  /**
+   * The factor corresponding to the collapsed likelihood.
+   * Connected to:
+   * - hp
+   * - clustering
+   */
+  public final Factor collapsedLikelihoodFactor = new Factor() 
   {
     @Override
     public double logUnnormalizedPotential()
@@ -130,7 +158,13 @@ public class CompleteState
     }
   };
   
-  private final Factor clusteringFactor = new Factor()
+  /**
+   * The factor corresponding to the PY/CRP clustering prior.
+   * Connected to:
+   * - clusteringParams
+   * - clustering
+   */
+  public final Factor clusteringFactor = new Factor()
   {
     @Override
     public double logUnnormalizedPotential()
@@ -145,17 +179,16 @@ public class CompleteState
     StringBuilder result = new StringBuilder();
     for (String key : realValuedStatistics().keySet())
       result.append(key + "=" + realValuedStatistics().get(key).getValue() + "\n");
-//    result.append("kappa=" + hp.kappa() + "\n");
-//    result.append("nu=" + hp.nu() + "\n");
-//    result.append("alpha0=" + clusteringParams.alpha0() + "\n");
-//    result.append("discount=" + clusteringParams.discount() + "\n");
-//    result.append("nTables=" + clustering.nTables() + "\n");
     return result.toString();
   }
 
+  /**
+   * The 
+   * @return
+   */
   public int nVariables()
   {
-    return clustering.nCustomers() + 4;
+    return clustering.nCustomers() + mhMoves.nVariables();
   }
   
   private Map<String, RealVariable> _realValuedStatistics = null;

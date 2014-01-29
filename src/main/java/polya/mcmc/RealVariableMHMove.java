@@ -5,9 +5,17 @@ import java.util.Random;
 
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
+import tutorialj.Tutorial;
 
 
 
+/**
+ * A very simple MH move for real random variables, using a standard 
+ * normal to propose.
+ * 
+ * @author Alexandre Bouchard (alexandre.bouchard@gmail.com)
+ *
+ */
 public class RealVariableMHMove
   {
     final SummaryStatistics acceptanceProbabilities = new SummaryStatistics();
@@ -21,8 +29,19 @@ public class RealVariableMHMove
       this.connectedFactors = connectedFactors;
     }
 
+    /**
+     * #### Code to implement: RealVariableMHMove.sample
+     * 
+     * Before the resampling of these random variables work, you need to 
+     * implement the core of the MH resampling move. Use a standard
+     * normal proposal (rand.nextGaussian()).
+     * 
+     * See RealVariable and computeLogUnnormalizedPotentials() below.
+     */
+    @Tutorial(showSource = false, showLink = true, nextStep = MHTest.class)
     public void sample(Random rand)
     {
+      /* startRem throw new RuntimeException(); */
       final double logDensityBefore = computeLogUnnormalizedPotentials();
       final double initialValue = variable.getValue();
       final double proposalDelta = rand.nextGaussian();
@@ -34,15 +53,20 @@ public class RealVariableMHMove
       acceptanceProbabilities.addValue(accept ? 1.0 : 0.0);
       if (!accept)
         variable.setValue(initialValue); // reject
+      /* endRem */
     }
     
+    /**
+     * Compute the part of the density that will be affected by 
+     * chaning the variable held in this object.
+     * 
+     * @return
+     */
     private double computeLogUnnormalizedPotentials()
     {
       double result = 0.0;
       for (Factor f : connectedFactors)
         result += f.logUnnormalizedPotential();
-//      if (Double.isNaN(result))
-//        throw new RuntimeException();
       return result;
     }
   }

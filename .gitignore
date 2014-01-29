@@ -1168,3 +1168,13 @@ results/all/org.eclipse.jdt.internal.junit.runner.RemoteTestRunner-pf3xcR85.exec
 results/all/org.eclipse.jdt.internal.junit.runner.RemoteTestRunner-pf3xcR85.exec/size=100000,rep=1.pdf
 results/all/org.eclipse.jdt.internal.junit.runner.RemoteTestRunner-pf3xcR85.exec/size=100000,rep=2.pdf
 results/latest
+bin/polya/mcmc/MHAlternation.class
+results/all/polya.crp.CRPMain-M6Y0FeqP.exec/CODAchain1.txt
+results/all/polya.crp.CRPMain-M6Y0FeqP.exec/CODAindex.txt
+results/all/polya.crp.CRPMain-M6Y0FeqP.exec/codaPlots.pdf
+results/all/polya.crp.CRPMain-M6Y0FeqP.exec/predictive.pdf
+results/all/polya.crp.CRPMain-M6Y0FeqP.exec/samples-csv/alpha0.csv
+results/all/polya.crp.CRPMain-M6Y0FeqP.exec/samples-csv/discount.csv
+results/all/polya.crp.CRPMain-M6Y0FeqP.exec/samples-csv/kappa.csv
+results/all/polya.crp.CRPMain-M6Y0FeqP.exec/samples-csv/nClusters.csv
+results/all/polya.crp.CRPMain-M6Y0FeqP.exec/samples-csv/nu.csv

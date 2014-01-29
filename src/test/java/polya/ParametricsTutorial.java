@@ -105,7 +105,7 @@ public class ParametricsTutorial
   @Tutorial(showSource = false, showLink = true)
   public static void visualize(Random rand, NIWHyperParameter initialHP)
   {
-    File parametricResultsFolder = Results.getResultFolder(); 
+    File parametricResultsFolder = new File("parametricResults"); 
     parametricResultsFolder.mkdir();
     TestedModel model = CollapsedNIWModel.instance;
     for (int datasetSize = 10; datasetSize < 1000000; datasetSize *= 10)

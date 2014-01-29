@@ -7,4 +7,4 @@ REP_ROOT=/Users/bouchard/w/polya
 CLASSPATH=${REP_ROOT}/bin/:`cat ${REP_ROOT}/.classpath | grep jar | sed 's/.* path..//' | sed 's/\".*//' | tr "\n" ":"`
 
 
-java -Xmx2g -cp ${CLASSPATH} polya.Main "$@"
+java -Xmx2g -cp ${CLASSPATH} polya.crp.CRPMain "$@"
