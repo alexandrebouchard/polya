@@ -38,7 +38,7 @@ dependencies {
 }
 
 
-task(tutorialj, dependsOn: ['build','testClasses'], type: JavaExec) {
+task(tutorialj, dependsOn: ['build'], type: JavaExec) {
   main = 'tutorialj.Main'
   classpath {
   	configurations.compile
@@ -51,5 +51,5 @@ task(tutorialj, dependsOn: ['build','testClasses'], type: JavaExec) {
 // use 'gradle startScripts' to create script
 // use 'gradle distZip' to create deployable zip
 // use 'gradle installApp' to copy it somewhere
-apply plugin:'application'  
-mainClassName = "polya.Main"
+// apply plugin:'application'  
+// mainClassName = "polya.Main"

@@ -29,4 +29,9 @@ mv git-temp-backup ${PRJ}-scaffold/.git
 # go over files, removing flagged parts of the code
 removeFlaggedCode ${PRJ}-scaffold y
 
+# refresh tutorialj
+cd ${PRJ}-scaffold
+rm create-scaffold.bash
+gradle tutorialj -x test
+
 cd $CUR

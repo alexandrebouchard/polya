@@ -42,6 +42,8 @@ Such test case can be created by simply adding the ``@Test``
 flag above the function you want to test.
 
 
+#### Method to implement: CRPState.removeCustomer
+
 ``CRPState.removeCustomer()`` is the first function you should fill in.
 You can base what you write on your work from the lab, but make
 sure you also update ``cluster2Statistic``.
@@ -50,11 +52,11 @@ You can get some information on how to do this by looking
 at how I modified ``addCustomerToNewTable()`` and 
 ``addCustomerToExistingTable()``. See also the class
 ``SufficientStatistic`` (to open a class, go in the menu
-``Navigate`` then ``Open Type`` and just type ``SufficientStatistic``)
+``Navigate`` then ``Open Type`` and just type ``SufficientStatistic``).
 
 Recall that ``removeCustomer()`` should behave as follows: it should remove 
 one customer, destroying the table if the customer was the last. The method
-should throw a RuntimeException if customer was not in restaurant
+should throw a RuntimeException if customer was not in restaurant.
 
 <sub>From:[polya.crp.CRPState](src/main/java//polya/crp/CRPState.java)</sub>
 
@@ -76,7 +78,7 @@ which contains behaviors specific to NIW.
 
 ### Parametrics: Utilities common to all conjugate models.
 
-#### logMarginal()
+#### Function to implement: logMarginal
 
 You should fill in this function so that it computes p\_hp(data), 
 marginalizing over parameters. See Equation (12,13) in
@@ -85,50 +87,53 @@ http://www.stat.ubc.ca/~bouchard/courses/stat547-sp2013-14/lecture/2014/01/12/no
 
 <sub>From:[polya.parametric.Parametrics](src/main/java//polya/parametric/Parametrics.java)</sub>
 
-#### logPredictive()
+#### Function to implement: logPredictive
 
-You should fill in this function so that it computes p\_hp(newPoints|oldPoints)
+You should fill in this function so that it computes p\_hp(newPoints|oldPoints).
 
 <sub>From:[polya.parametric.Parametrics](src/main/java//polya/parametric/Parametrics.java)</sub>
 
 ### CollapsedNIWModel: Implementation of a NIW model
 
 Make sure you check this source carefully: p.46 of 
+
 http://cs.brown.edu/~sudderth/papers/sudderthPhD.pdf
 
-Also, for matrix computation you will be using EJML
+Also, for matrix computation you will be using EJML:
+
 https://code.google.com/p/efficient-java-matrix-library/wiki/SimpleMatrix
-I suggest to start with SimpleMatrix operations (but see optional
+
+I suggest to start with ``SimpleMatrix`` operations (but see optional
 questions for suggested optional improvements in this 
 area).
 
-#### logPriorDensityAtThetaStar()
+#### Method to implement: logPriorDensityAtThetaStar
 
-You should fill in this function. See 
-CollapsedConjugateModel, NIWHyperParameter, as well
-as bayonet.SpecialFunctions.multivariateLogGamma()
+See 
+``CollapsedConjugateModel``, ``NIWHyperParameter``, as well
+as ``bayonet.SpecialFunctions.multivariateLogGamma()``.
 
 
 <sub>From:[polya.parametric.normal.CollapsedNIWModel](src/main/java//polya/parametric/normal/CollapsedNIWModel.java)</sub>
 
-#### logLikelihoodGivenThetaStar()
+#### Method to implement: logLikelihoodGivenThetaStar
 
-You should fill in this function. See 
-CollapsedConjugateModel, SufficientStatistic, as well as
-bayonet.distributions.Normal
+See 
+``CollapsedConjugateModel``, ``SufficientStatistic``, as well as
+``bayonet.distributions.Normal``.
 
 Hint: pick theta* to have mean zero and identity covariance.
 
 
 <sub>From:[polya.parametric.normal.CollapsedNIWModel](src/main/java//polya/parametric/normal/CollapsedNIWModel.java)</sub>
 
-#### update()
+#### Method to implement: update
 
-You should fill in this function. The last one
+This is the last one
 before the end of the parametric part of this exercise!
 
 See 
-CollapsedConjugateModel, NIWHyperParameter, SufficientStatistic
+``CollapsedConjugateModel``, ``NIWHyperParameter``, ``SufficientStatistic``.
 
 <sub>From:[polya.parametric.normal.CollapsedNIWModel](src/main/java//polya/parametric/normal/CollapsedNIWModel.java)</sub>
 
@@ -168,16 +173,16 @@ arrangements.
 
 ### Function to implement in this part
 
-The main function to implement, CRPSamplers.gibbs(),
+The main function to implement, ``CRPSamplers.gibbs()``,
 should perform a single Gibbs step for the provided customer.
 
 The probability of insertion at each table should combine 
-the prior (via the provided PYPrior) and the likelihood (via 
+the prior (via the provided ``PYPrior``) and the likelihood (via 
 the provided 
-CollapsedConjugateModel and HyperParameter).
+``CollapsedConjugateModel`` and ``HyperParameter``).
 
 To make sure you are avoiding underflows, have a look 
-at the utilities in bayonet.distributions.Multinomial
+at the utilities in ``bayonet.distributions.Multinomial``.
 
 <sub>From:[polya.crp.CRPSamplers](src/main/java//polya/crp/CRPSamplers.java)</sub>
 
@@ -206,8 +211,8 @@ symlinked in ``experiments/latest`` containing:
 
 - Coda files for various variables (number of tables, more hyper-parameters later)
 - Generated traceplots for the above ``codaPlots.pdf``
-- The average of the predictive distributions, ``predictive.pdf`` (see CompleteState.logPredictive()
-and LogAverageFunction if you are curious about how this plot is created).
+- The average of the predictive distributions, ``predictive.pdf`` (see ``CompleteState.logPredictive()``
+and ``LogAverageFunction`` if you are curious about how this plot is created).
 
 The predictive should be a fairly faithful reconstruction of the data if your code is 
 correct.
@@ -225,11 +230,11 @@ Next, you will add some Metropolis-Hastings steps to resample the following vari
 
 For example, once you have completed the next step, un-commenting the line below will 
 enable the resampling of alpha0. Similar lines can be used for the other quantities.
-Just be careful of picking a reasonable prior (see ExponentialPrior and
-UniformPrior).
+Just be careful of picking a reasonable prior (see ``ExponentialPrior`` and
+``UniformPrior``).
 
-**Warning:** Make sure you provide all the factors connected to the variable in state.mhMoves.addRealNodeToResampleWithPrior()
-(see state.clusteringFactor and state.collapsedLikelihoodFactor).
+**Warning:** Make sure you provide all the factors connected to the variable in ``state.mhMoves.addRealNodeToResampleWithPrior()``
+(see ``state.clusteringFactor`` and ``state.collapsedLikelihoodFactor``).
 
 ```java
 /* startRem // state.mhMoves.addRealNodeToResampleWithPrior(state.clusteringParams.alpha0VariableView(), ExponentialPrior.withRate(1e-100).truncateAt(-1), state.clusteringFactor); */
@@ -260,9 +265,9 @@ state.mhMoves.addRealNodeToResampleWithPrior(
 
 Before the resampling of these random variables work, you need to 
 implement the core of the MH resampling move. Use a standard
-normal proposal (rand.nextGaussian()).
+normal proposal (``rand.nextGaussian()``).
 
-See RealVariable and computeLogUnnormalizedPotentials() below.
+See ``RealVariable`` and ``RealVariableMHMove.computeLogUnnormalizedPotentials()``.
 
 <sub>From:[polya.mcmc.RealVariableMHMove](src/main/java//polya/mcmc/RealVariableMHMove.java)</sub>
 
