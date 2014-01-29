@@ -12,6 +12,7 @@ import tutorialj.Tutorial;
  * 
  * @author Alexandre Bouchard (alexandre.bouchard@gmail.com)
  *
+ * TODO: Move to test directory.
  */
 public class MHTest
 {

@@ -19,7 +19,6 @@ import polya.parametric.normal.MVNParameter;
 import polya.parametric.normal.NIWs;
 import bayonet.math.EJMLUtils;
 import bayonet.rplot.PlotContour;
-import briefj.Results;
 
 import tutorialj.Tutorial;
 
@@ -68,7 +67,7 @@ public class ParametricsTutorial
    * nu = dim, which makes the expectation of the NIW not finite (see wiki
    * acticle on NIW for detail))).
    */
-  @Tutorial(showSource = false, showLink = true)
+  @Tutorial(showSource = false, showLink = true, linkPrefix = "src/test/java/")
   public static void testParametricModel(Random rand, TestedModel model, HyperParameter initialHP)
   {
     // generate datasets of increasing size
@@ -102,7 +101,7 @@ public class ParametricsTutorial
    * also printed to be able to assess visually if the system is doing something
    * reasonable.
    */
-  @Tutorial(showSource = false, showLink = true)
+  @Tutorial(showSource = false, showLink = true, linkPrefix = "src/test/java/")
   public static void visualize(Random rand, NIWHyperParameter initialHP)
   {
     File parametricResultsFolder = new File("parametricResults"); 

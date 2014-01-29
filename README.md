@@ -13,19 +13,8 @@ Requires: gradle, git, eclipse
   - ``Import existing projects into workspace``
   - Select the root of the newly created repo
   - Deselect ``Copy projects into workspace`` to avoid having duplicates
-- You can call polya.Main from the command line via ``./polya``
-  - Move the executable ``polya`` to a PATH folder (or add this folder to PATH)
-  to have access from anywhere
-  - Changes done via eclipse will be reflected right away
 
-Usage
------
 
-To run the software:
-
-```java
-// TODO
-```
 
 CRP State
 ---------
@@ -156,7 +145,7 @@ such that the distribution on parameters is vague (more specifically,
 nu = dim, which makes the expectation of the NIW not finite (see wiki
 acticle on NIW for detail))).
 
-<sub>From:[polya.ParametricsTutorial](src/main/java//polya/ParametricsTutorial.java)</sub>
+<sub>From:[polya.ParametricsTutorial](src/test/java//polya/ParametricsTutorial.java)</sub>
 
 #### Second half of the test case
 
@@ -167,7 +156,7 @@ to get more intuition on the NIW model. The true mean and covariance are
 also printed to be able to assess visually if the system is doing something
 reasonable.
 
-<sub>From:[polya.ParametricsTutorial](src/main/java//polya/ParametricsTutorial.java)</sub>
+<sub>From:[polya.ParametricsTutorial](src/test/java//polya/ParametricsTutorial.java)</sub>
 
 Gibbs sampling of the customers
 -------------------------------

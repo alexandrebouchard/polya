@@ -22,21 +22,10 @@ public class PolyaTutorial
    *   - ``Import existing projects into workspace``
    *   - Select the root of the newly created repo
    *   - Deselect ``Copy projects into workspace`` to avoid having duplicates
-   * - You can call polya.Main from the command line via ``./polya``
-   *   - Move the executable ``polya`` to a PATH folder (or add this folder to PATH)
-   *   to have access from anywhere
-   *   - Changes done via eclipse will be reflected right away
    * 
-   * Usage
-   * -----
-   * 
-   * To run the software:
    */
-  @Tutorial(startTutorial = "README.md")
-  public void usage()
-  {
-    // TODO
-  }
+  @Tutorial(startTutorial = "README.md", showSource = false)
+  public void usage() {}
   
   
   /**
