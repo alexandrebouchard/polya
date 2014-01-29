@@ -212,6 +212,103 @@ and is available via the small arrow by the green play icon on the top of your e
 
 #### Expected result
 
+Running the code will create a new unique directory, ``experiments/all/[name of main]-[unique id].exec``,
+symlinked in ``experiments/latest`` containing:
+
+- Coda files for various variables (number of tables, more hyper-parameters later)
+- Generated traceplots for the above ``codaPlots.pdf``
+- The average of the predictive distributions, ``predictive.pdf`` (see CompleteState.logPredictive()
+and LogAverageFunction if you are curious about how this plot is created).
+
+The predictive should be a fairly faithful reconstruction of the data if your code is 
+correct.
+
+<sub>From:[polya.crp.CRPMain](src/main/java//polya/crp/CRPMain.java)</sub>
+
+### Resampling hyper parameters (Optional)
+
+Next, you will add some Metropolis-Hastings steps to resample the following variables:
+
+- the concentration or strength parameter alpha0 of the PY
+- the discount parameter theta
+- the hyper-parameter kappa of the NIW model
+- the hyper-parameter nu of the NIW model
+
+For example, once you have completed the next step, un-commenting the line below will 
+enable the resampling of alpha0. Similar lines can be used for the other quantities.
+Just be careful of picking a reasonable prior (see ExponentialPrior and
+UniformPrior).
+
+**Warning:** Make sure you provide all the factors connected to the variable in state.mhMoves.addRealNodeToResampleWithPrior()
+(see state.clusteringFactor and state.collapsedLikelihoodFactor).
+
+```java
+/* startRem // state.mhMoves.addRealNodeToResampleWithPrior(state.clusteringParams.alpha0VariableView(), ExponentialPrior.withRate(1e-100).truncateAt(-1), state.clusteringFactor); */
+// resample clustering parameters
+state.mhMoves.addRealNodeToResampleWithPrior(
+    state.clusteringParams.alpha0VariableView(), 
+    ExponentialPrior.withRate(1e-100).truncateAt(-1), 
+    state.clusteringFactor);
+state.mhMoves.addRealNodeToResampleWithPrior(
+    state.clusteringParams.discountVariableView(),
+    UniformPrior.onUnitInteval(),
+    state.clusteringFactor);
+
+// resample likelihood hyper-params
+state.mhMoves.addRealNodeToResampleWithPrior(
+    state.hp.kappaVariableView(),
+    ExponentialPrior.withRate(1e-100),
+    state.collapsedLikelihoodFactor);
+state.mhMoves.addRealNodeToResampleWithPrior(
+    state.hp.nuVariableView(),
+    ExponentialPrior.withRate(1e-100).truncateAt(state.hp.dim() - 1),
+    state.collapsedLikelihoodFactor);
+/* endRem */
+```
+<sub>From:[polya.crp.CRPMain](src/main/java//polya/crp/CRPMain.java)</sub>
+
+#### Code to implement: RealVariableMHMove.sample
+
+Before the resampling of these random variables work, you need to 
+implement the core of the MH resampling move. Use a standard
+normal proposal (rand.nextGaussian()).
+
+See RealVariable and computeLogUnnormalizedPotentials() below.
+
+<sub>From:[polya.mcmc.RealVariableMHMove](src/main/java//polya/mcmc/RealVariableMHMove.java)</sub>
+
+#### Simple test case for the MH sampling code
+
+Here is a simple test case if you want to test the MH code 
+without running the whole pipeline (this should output approximately
+1/lambda):
+
+```java
+final RealVariable variable = new RealVariableImpl(1.0);
+final double lambda = 5.0;
+final Factor exponentialDist = new Factor() {
+  @Override
+  public double logUnnormalizedPotential()
+  {
+    if (variable.getValue() < 0.0)
+      return Double.NEGATIVE_INFINITY;
+    return -lambda * variable.getValue();
+  }
+};
+
+RealVariableMHMove move = new RealVariableMHMove(variable, Collections.singleton(exponentialDist));
+
+SummaryStatistics stat = new SummaryStatistics();
+Random rand = new Random(1);
+for (int i = 0; i < 100000; i++)
+{
+  move.sample(rand);
+  stat.addValue(variable.getValue());
+}
+System.out.println("EX=" + stat.getMean());
+System.out.println("acceptRate=" + move.acceptanceProbabilities.getMean());
+```
+<sub>From:[polya.mcmc.MHTest](src/main/java//polya/mcmc/MHTest.java)</sub>
 
 Glossary and abbreviations
 --------------------------
