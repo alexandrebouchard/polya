@@ -113,8 +113,6 @@ public class TwoMomentsSufficientStatistics implements SufficientStatistic
     return numberOfPoints;
   }
 
-  
-  
   @Override
   public void plusEqual(SufficientStatistic _other)
   {

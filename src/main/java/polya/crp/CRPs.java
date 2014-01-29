@@ -4,7 +4,8 @@ import java.util.Map;
 
 import org.apache.commons.math3.special.Gamma;
 
-import polya.crp.CRPSamplers.PYPrior;
+import polya.crp.utils.ClusterId;
+
 
 import com.beust.jcommander.internal.Maps;
 import com.google.common.base.Optional;

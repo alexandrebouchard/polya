@@ -28,6 +28,9 @@ import polya.parametric.SufficientStatistic;
 public class NIWs
 {
   /**
+   * Return a function that given a point gives the probability of this point under the provided
+   * hyperparameters. Typically used to plot the posterior (achieved via updated hyper-params and
+   * PlotContour)
    * 
    * @param updated
    * @return
@@ -50,15 +53,16 @@ public class NIWs
    * @param param
    * @return
    */
-  public static NIWParameter maximumAPosteriori(NIWHyperParameter param)
+  public static MVNParameter maximumAPosteriori(NIWHyperParameter param)
   {
     double scaling = param.nu() / (param.nu() + param.dim() - 1);
     if (scaling < 0)
       scaling = Double.NaN;
-    return new NIWParameter(param.scriptV(), param.delta().scale(scaling));
+    return new MVNParameter(param.scriptV(), param.delta().scale(scaling));
   }
   
   /**
+   * Samples from a multivariate normal distribution.
    * 
    * @param rand
    * @param mean
@@ -79,19 +83,21 @@ public class NIWs
   }
   
   /**
+   * Samples from a normal inverse Wishart distribution
    * 
    * @param rand
    * @param param
    * @return
    */
-  public static NIWParameter nextNIW(Random rand, NIWHyperParameter param)
+  public static MVNParameter nextNIW(Random rand, NIWHyperParameter param)
   {
     SimpleMatrix covar = nextInverseWishart(rand, param.delta(), BriefMath.getAndCheckInt(param.nu()));
     SimpleMatrix mean = nextMVN(rand, param.scriptV(), covar.scale(1.0 / param.kappa()));
-    return new NIWParameter(mean, covar);
+    return new MVNParameter(mean, covar);
   }
   
   /**
+   * Samples from an INVERSE Wishart distribution
    * 
    * @param rand
    * @param V
@@ -104,6 +110,7 @@ public class NIWs
   }
   
   /**
+   * Sample from a Wishart distribution (NOT inverse)
    * 
    * @param rand
    * @param V
@@ -159,7 +166,7 @@ public class NIWs
    * @param p2
    * @return l_infinity norm over both mean and covariance matrices
    */
-  public static double lInfinityDistance(NIWParameter p1, NIWParameter p2)
+  public static double lInfinityDistance(MVNParameter p1, MVNParameter p2)
   {
     double norm1 = lInfinityDistance(p1.getMeanParameter(), p2.getMeanParameter());
     double norm2 = lInfinityDistance(p1.getCovarianceParameter(), p2.getCovarianceParameter());

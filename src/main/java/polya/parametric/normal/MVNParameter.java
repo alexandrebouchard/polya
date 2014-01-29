@@ -5,12 +5,18 @@ import org.ejml.simple.SimpleMatrix;
 import polya.parametric.Parameter;
 
 
-
-public class NIWParameter implements Parameter
+/**
+ * 
+ * The parameters of a multivariate normal distribution.
+ * 
+ * @author Alexandre Bouchard (alexandre.bouchard@gmail.com)
+ *
+ */
+public class MVNParameter implements Parameter
 {
   private final SimpleMatrix meanParameter, covarianceParameter;
 
-  public NIWParameter(
+  public MVNParameter(
       SimpleMatrix meanParameter,
       SimpleMatrix covarianceParameter)
   {

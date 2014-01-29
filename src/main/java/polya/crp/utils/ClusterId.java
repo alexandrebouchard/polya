@@ -1,6 +1,5 @@
-package polya.crp;
+package polya.crp.utils;
 
-import tutorialj.Tutorial;
 
 
 

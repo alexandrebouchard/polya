@@ -9,10 +9,11 @@ import java.util.Random;
 
 import org.apache.commons.math3.analysis.MultivariateFunction;
 
-import com.google.common.collect.Lists;
+
 import com.google.common.collect.Maps;
 
-import polya.crp.CRPSamplers.PYPrior;
+import polya.crp.utils.ClusterId;
+import polya.crp.utils.LogAverageFunction;
 import polya.mcmc.ExponentialPrior;
 import polya.mcmc.Factor;
 import polya.mcmc.MHMixture;
@@ -82,50 +83,6 @@ public class CompleteState
     return result;
   }
   
-  public static class LogAverageFunction implements MultivariateFunction
-  {
-    private final List<Double> logWeights = Lists.newArrayList();
-    private final List<MultivariateFunction> functions = Lists.newArrayList();
-    
-    public void addFunction(double logWeight, MultivariateFunction function)
-    {
-      logWeights.add(logWeight);
-      functions.add(function);
-    }
-
-    @Override
-    public double value(double[] point)
-    {
-      double sum = Double.NEGATIVE_INFINITY;
-      for (int i =0; i < logWeights.size(); i++)
-      {
-        double lw = logWeights.get(i);
-        double pred = functions.get(i).value(point);
-        sum = logAdd(sum, lw + pred);
-      }
-      return sum;
-    }
-    
-  }
-  
-  public static double logAdd(double logX, double logY) {
-    // make a the max
-    if (logY > logX) {
-      double temp = logX;
-      logX = logY;
-      logY = temp;
-    }
-    // now a is bigger
-    if (logX == Double.NEGATIVE_INFINITY) {
-      return logX;
-    }
-    double negDiff = logY - logX;
-    if (negDiff < -20) {
-      return logX;
-    }
-    return logX + java.lang.Math.log(1.0 + java.lang.Math.exp(negDiff));
-  }
-
   private MHMixture initMHMoves()
   {
     MHMixture result = new MHMixture();

@@ -1,5 +1,6 @@
 package polya;
 
+import polya.crp.CRPSamplers;
 import tutorialj.Tutorial;
 
 
@@ -58,11 +59,19 @@ public class PolyaTutorial
    * and perhaps others if time permits.
    */
   @Tutorial(showSource = false, nextStep = ParametricsTutorial.class)
-  public void parametrics()
-  {
-    
-  }
+  public void parametrics() {}
   
+  
+  /**
+   * Gibbs sampling of the customers
+   * -------------------------------
+   * 
+   * We are now ready to combine the parametric machinery with you CRPState
+   * implementation into a collapsed Gibbs sampler of the seating 
+   * arrangements.
+   */
+  @Tutorial(showSource = false, nextStep = CRPSamplers.class)
+  public void gibbs() {}
   
   /**
    * Glossary and abbreviations
@@ -82,6 +91,7 @@ public class PolyaTutorial
    * - MVN: MultiVariate Normal.
    * - NIW: Normal Inverse Wishart. A conjugate prior for mean and var of a MVN.
    * - nuPrime: One of the NIW hyper-parameters. See NIWHyperParameters
+   * - PY: Pitman-Yor process
    */
   @Tutorial(showSource = false)
   public void glossary()

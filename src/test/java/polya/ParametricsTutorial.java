@@ -1,7 +1,7 @@
 package polya;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.Locale;
 import java.util.Random;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -15,9 +15,11 @@ import polya.parametric.SufficientStatistic;
 import polya.parametric.TestedModel;
 import polya.parametric.normal.CollapsedNIWModel;
 import polya.parametric.normal.NIWHyperParameter;
-import polya.parametric.normal.NIWParameter;
+import polya.parametric.normal.MVNParameter;
 import polya.parametric.normal.NIWs;
+import bayonet.math.EJMLUtils;
 import bayonet.rplot.PlotContour;
+import briefj.Results;
 
 import tutorialj.Tutorial;
 
@@ -41,32 +43,38 @@ public class ParametricsTutorial
   public void runTests()
   {
     // Accuracy of reconstructions on simulated data
+    Locale.setDefault(Locale.US);
     Random rand = new Random(1);
     TestedModel model = CollapsedNIWModel.instance;
     NIWHyperParameter hp = NIWHyperParameter.withDimensionality(2);
     testParametricModel(rand, model, hp);
-    System.out.println();
+    System.out.println("-------");
     
     // Visualization of the predictive
     visualize(rand, hp);
   }
   
   /**
-   * ### Expected results of test cases.
+   * ### Test cases
+   * 
+   * #### Expected results of the first half of the test case.
    * 
    * After you implement the above mentioned functions, in the first test you
    * should see the average distance between the inferred (MAP) parameters and
    * the generated true ones decrease as the size of the generated dataset increases.
-   * It should get down to a distance of  about 3. Note that these distances are
+   * It should get down to a distance of  about 3 (Note that these distances are
    * fairly large because they are max norms, and the hyperparameters are picked
-   * such that the distribution on parameters is vague (more specifically, by picking 
-   * 
+   * such that the distribution on parameters is vague (more specifically, 
+   * nu = dim, which makes the expectation of the NIW not finite (see wiki
+   * acticle on NIW for detail))).
    */
   @Tutorial(showSource = false, showLink = true)
   public static void testParametricModel(Random rand, TestedModel model, HyperParameter initialHP)
   {
+    // generate datasets of increasing size
     for (int datasetSize = 10; datasetSize < 1000000; datasetSize *= 10)
     {
+      // compute average reconstruction error for datasets of this size:
       SummaryStatistics distanceStatistics = new SummaryStatistics();
       for (int nReplicates = 0; nReplicates < 100; nReplicates++)
       {
@@ -84,31 +92,41 @@ public class ParametricsTutorial
     }
   }
   
-
-  
+  /**
+   * #### Second half of the test case
+   * 
+   * In the second half of the test case, we use a similar data generation
+   * strategy as in the first half, but this time we plot the predictive distribution
+   * in the folder ``parametricResults``. The objective is 
+   * to get more intuition on the NIW model. The true mean and covariance are 
+   * also printed to be able to assess visually if the system is doing something
+   * reasonable.
+   */
+  @Tutorial(showSource = false, showLink = true)
   public static void visualize(Random rand, NIWHyperParameter initialHP)
   {
+    File parametricResultsFolder = Results.getResultFolder(); 
+    parametricResultsFolder.mkdir();
     TestedModel model = CollapsedNIWModel.instance;
     for (int datasetSize = 10; datasetSize < 1000000; datasetSize *= 10)
     {
-      SummaryStatistics distanceStatistics = new SummaryStatistics();
       for (int nReplicates = 0; nReplicates < 3; nReplicates++)
       {
         Pair<Parameter, SufficientStatistic> generatedData = 
           model.generateData(rand, initialHP, datasetSize);
-        NIWParameter trueParam = (NIWParameter) generatedData.getLeft();
+        MVNParameter trueParam = (MVNParameter) generatedData.getLeft();
         SufficientStatistic data = generatedData.getRight();
         HyperParameter updatedHP = model.update(initialHP, data);
-        Parameter map = model.maximumAPosteriori(updatedHP);
-        distanceStatistics.addValue(model.distance(trueParam, map));
         NIWHyperParameter nhp = (NIWHyperParameter) updatedHP;
-        System.out.println("size=" + datasetSize + ",rep=" + nReplicates + ",trueMean=" + Arrays.toString(trueParam.getMeanParameter().getMatrix().getData()));
+        System.out.println("size=" + datasetSize + ",rep=" + nReplicates);
+        System.out.println("trueMean=\n" + EJMLUtils.toString(trueParam.getMeanParameter()));
+        System.out.println("trueCovar=\n" + EJMLUtils.toString(trueParam.getCovarianceParameter()));
+        
         PlotContour pc = PlotContour.fromFunction(NIWs.logMarginalAsFunctionOfData(nhp));
-        pc.min_x = -100;
-        pc.max_x = 100;
-        pc.min_y = -100;
-        pc.max_y = 100;
-        pc.toPDF(new File("/Users/bouchard/temp/contour,size=" + datasetSize + ",rep=" + nReplicates + ".pdf"));
+        pc.centerToZero(100);
+        
+        pc.toPDF(new File(parametricResultsFolder, "size=" + datasetSize + ",rep=" + nReplicates + ".pdf"));
+        System.out.println("---");
       }
     }
   }

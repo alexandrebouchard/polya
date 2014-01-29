@@ -34,6 +34,12 @@ public class CollapsedNIWModel implements CollapsedConjugateModel, TestedModel
    * Make sure you check this source carefully: p.46 of 
    * http://cs.brown.edu/~sudderth/papers/sudderthPhD.pdf
    * 
+   * Also, for matrix computation you will be using EJML
+   * https://code.google.com/p/efficient-java-matrix-library/wiki/SimpleMatrix
+   * I suggest to start with SimpleMatrix operations (but see optional
+   * questions for suggested optional improvements in this 
+   * area).
+   * 
    * #### logPriorDensityAtThetaStar()
    * 
    * You should fill in this function. See 
@@ -154,7 +160,7 @@ public class CollapsedNIWModel implements CollapsedConjugateModel, TestedModel
   {
     NIWHyperParameter hp = (NIWHyperParameter) _hp;
     // generate prior
-    NIWParameter parameter = NIWs.nextNIW(rand, hp);
+    MVNParameter parameter = NIWs.nextNIW(rand, hp);
     // generate data
     TwoMomentsSufficientStatistics stats = TwoMomentsSufficientStatistics.fromEmpty(hp.dim());
     for (int i = 0; i < nDataPoints; i++)
@@ -182,8 +188,8 @@ public class CollapsedNIWModel implements CollapsedConjugateModel, TestedModel
   @Override
   public double distance(Parameter _truth, Parameter _reconstructed)
   {
-    NIWParameter truth = (NIWParameter) _truth;
-    NIWParameter reconstructed = (NIWParameter) _reconstructed;
+    MVNParameter truth = (MVNParameter) _truth;
+    MVNParameter reconstructed = (MVNParameter) _reconstructed;
     double norm = NIWs.lInfinityDistance(truth, reconstructed);
     return norm;
   }
