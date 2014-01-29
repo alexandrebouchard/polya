@@ -32,19 +32,22 @@ public class CollapsedNIWModel implements CollapsedConjugateModel, TestedModel
    * ### CollapsedNIWModel: Implementation of a NIW model
    * 
    * Make sure you check this source carefully: p.46 of 
+   * 
    * http://cs.brown.edu/~sudderth/papers/sudderthPhD.pdf
    * 
-   * Also, for matrix computation you will be using EJML
+   * Also, for matrix computation you will be using EJML:
+   * 
    * https://code.google.com/p/efficient-java-matrix-library/wiki/SimpleMatrix
-   * I suggest to start with SimpleMatrix operations (but see optional
+   * 
+   * I suggest to start with ``SimpleMatrix`` operations (but see optional
    * questions for suggested optional improvements in this 
    * area).
    * 
-   * #### logPriorDensityAtThetaStar()
+   * #### Method to implement: logPriorDensityAtThetaStar
    * 
-   * You should fill in this function. See 
-   * CollapsedConjugateModel, NIWHyperParameter, as well
-   * as bayonet.SpecialFunctions.multivariateLogGamma()
+   * See 
+   * ``CollapsedConjugateModel``, ``NIWHyperParameter``, as well
+   * as ``bayonet.SpecialFunctions.multivariateLogGamma()``.
    * 
    */
   @Tutorial(showSource = false, showLink = true)
@@ -67,11 +70,11 @@ public class CollapsedNIWModel implements CollapsedConjugateModel, TestedModel
   }
 
   /**
-   * #### logLikelihoodGivenThetaStar()
+   * #### Method to implement: logLikelihoodGivenThetaStar
    * 
-   * You should fill in this function. See 
-   * CollapsedConjugateModel, SufficientStatistic, as well as
-   * bayonet.distributions.Normal
+   * See 
+   * ``CollapsedConjugateModel``, ``SufficientStatistic``, as well as
+   * ``bayonet.distributions.Normal``.
    * 
    * Hint: pick theta* to have mean zero and identity covariance.
    * 
@@ -91,13 +94,13 @@ public class CollapsedNIWModel implements CollapsedConjugateModel, TestedModel
   }
   
   /**
-   * #### update()
+   * #### Method to implement: update
    * 
-   * You should fill in this function. The last one
+   * This is the last one
    * before the end of the parametric part of this exercise!
    * 
    * See 
-   * CollapsedConjugateModel, NIWHyperParameter, SufficientStatistic
+   * ``CollapsedConjugateModel``, ``NIWHyperParameter``, ``SufficientStatistic``.
    */
   @Tutorial(showSource = false, showLink = true)
   @Override

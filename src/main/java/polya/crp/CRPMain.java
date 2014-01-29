@@ -53,8 +53,8 @@ public class CRPMain
    * 
    * - Coda files for various variables (number of tables, more hyper-parameters later)
    * - Generated traceplots for the above ``codaPlots.pdf``
-   * - The average of the predictive distributions, ``predictive.pdf`` (see CompleteState.logPredictive()
-   * and LogAverageFunction if you are curious about how this plot is created).
+   * - The average of the predictive distributions, ``predictive.pdf`` (see ``CompleteState.logPredictive()``
+   * and ``LogAverageFunction`` if you are curious about how this plot is created).
    * 
    * The predictive should be a fairly faithful reconstruction of the data if your code is 
    * correct.
@@ -122,11 +122,11 @@ public class CRPMain
    * 
    * For example, once you have completed the next step, un-commenting the line below will 
    * enable the resampling of alpha0. Similar lines can be used for the other quantities.
-   * Just be careful of picking a reasonable prior (see ExponentialPrior and
-   * UniformPrior).
+   * Just be careful of picking a reasonable prior (see ``ExponentialPrior`` and
+   * ``UniformPrior``).
    * 
-   * **Warning:** Make sure you provide all the factors connected to the variable in state.mhMoves.addRealNodeToResampleWithPrior()
-   * (see state.clusteringFactor and state.collapsedLikelihoodFactor).
+   * **Warning:** Make sure you provide all the factors connected to the variable in ``state.mhMoves.addRealNodeToResampleWithPrior()``
+   * (see ``state.clusteringFactor`` and ``state.collapsedLikelihoodFactor``).
    */
   @Tutorial(showLink = true, nextStep = RealVariableMHMove.class)
   private static void initMHMoves(CompleteState state)

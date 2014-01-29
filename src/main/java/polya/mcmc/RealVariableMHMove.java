@@ -34,9 +34,9 @@ public class RealVariableMHMove
      * 
      * Before the resampling of these random variables work, you need to 
      * implement the core of the MH resampling move. Use a standard
-     * normal proposal (rand.nextGaussian()).
+     * normal proposal (``rand.nextGaussian()``).
      * 
-     * See RealVariable and computeLogUnnormalizedPotentials() below.
+     * See ``RealVariable`` and ``RealVariableMHMove.computeLogUnnormalizedPotentials()``.
      */
     @Tutorial(showSource = false, showLink = true, nextStep = MHTest.class)
     public void sample(Random rand)

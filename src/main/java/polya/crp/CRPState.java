@@ -26,6 +26,8 @@ public class CRPState
 {
   
   /**
+   * #### Method to implement: CRPState.removeCustomer
+   * 
    * ``CRPState.removeCustomer()`` is the first function you should fill in.
    * You can base what you write on your work from the lab, but make
    * sure you also update ``cluster2Statistic``.
@@ -34,11 +36,11 @@ public class CRPState
    * at how I modified ``addCustomerToNewTable()`` and 
    * ``addCustomerToExistingTable()``. See also the class
    * ``SufficientStatistic`` (to open a class, go in the menu
-   * ``Navigate`` then ``Open Type`` and just type ``SufficientStatistic``)
+   * ``Navigate`` then ``Open Type`` and just type ``SufficientStatistic``).
    * 
    * Recall that ``removeCustomer()`` should behave as follows: it should remove 
    * one customer, destroying the table if the customer was the last. The method
-   * should throw a RuntimeException if customer was not in restaurant
+   * should throw a RuntimeException if customer was not in restaurant.
    */
   @Tutorial(showSource = false, showLink = true)
   public void removeCustomer(Integer customer)

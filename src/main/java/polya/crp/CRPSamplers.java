@@ -24,16 +24,16 @@ public class CRPSamplers
   /**
    * ### Function to implement in this part
    * 
-   * The main function to implement, CRPSamplers.gibbs(),
+   * The main function to implement, ``CRPSamplers.gibbs()``,
    * should perform a single Gibbs step for the provided customer.
    * 
    * The probability of insertion at each table should combine 
-   * the prior (via the provided PYPrior) and the likelihood (via 
+   * the prior (via the provided ``PYPrior``) and the likelihood (via 
    * the provided 
-   * CollapsedConjugateModel and HyperParameter).
+   * ``CollapsedConjugateModel`` and ``HyperParameter``).
    * 
    * To make sure you are avoiding underflows, have a look 
-   * at the utilities in bayonet.distributions.Multinomial
+   * at the utilities in ``bayonet.distributions.Multinomial``.
    */
   @Tutorial(showSource = false, showLink = true, nextStep = CRPMain.class)
   public static void gibbs(

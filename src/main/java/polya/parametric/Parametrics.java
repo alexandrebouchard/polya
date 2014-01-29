@@ -16,7 +16,7 @@ public class Parametrics
   /**
    * ### Parametrics: Utilities common to all conjugate models.
    * 
-   * #### logMarginal()
+   * #### Function to implement: logMarginal
    * 
    * You should fill in this function so that it computes p\_hp(data), 
    * marginalizing over parameters. See Equation (12,13) in
@@ -39,9 +39,9 @@ public class Parametrics
   }
   
   /**
-   * #### logPredictive()
+   * #### Function to implement: logPredictive
    * 
-   * You should fill in this function so that it computes p\_hp(newPoints|oldPoints)
+   * You should fill in this function so that it computes p\_hp(newPoints|oldPoints).
    */
   @Tutorial(showSource = false, showLink = true, nextStep = CollapsedNIWModel.class)
   public static double logPredictive(
