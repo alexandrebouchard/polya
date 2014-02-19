@@ -59,6 +59,8 @@ public class ExponentialPrior implements RealNodePrior
   public double logUnnormalizedPotential()
   {
     double x = variable.getValue() - min;
+    if (x < 0.0)
+      return Double.NEGATIVE_INFINITY;
     return -rate * x;
   }
 
