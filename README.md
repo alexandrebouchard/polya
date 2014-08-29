@@ -2,7 +2,7 @@
 # polya
 
 Installing from source
-----------------------
+-------------------------
 
 Requires: gradle, git, eclipse
 
